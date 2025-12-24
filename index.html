@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nash Ang's Homelab</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',
+                            card: '#1e293b',
+                            accent: '#38bdf8',
+                            text: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; }
+        .service-card { transition: all 0.3s ease; }
+        .service-card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #38bdf8;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #38bdf8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navigation / Control Bar -->
+    <nav class="w-full p-6 flex justify-between items-center max-w-7xl mx-auto">
+        <div class="text-2xl font-bold tracking-tighter">
+            nash<span class="text-brand-accent">.lab</span>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <span class="text-xs font-mono text-brand-text">CLOUD</span>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                <input type="checkbox" name="toggle" id="network-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300 left-0"/>
+                <label for="network-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-700 cursor-pointer"></label>
+            </div>
+            <span class="text-xs font-mono text-brand-text">LAN</span>
+        </div>
+    </nav>
+
+    <!-- Hero / Portfolio Section -->
+    <header class="flex-1 flex flex-col justify-center items-center text-center px-4 py-20">
+        <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 mb-8 flex items-center justify-center text-4xl font-bold shadow-2xl">
+            N
+        </div>
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+            System Administrator
+        </h1>
+        <p class="text-xl text-brand-text max-w-2xl mb-10 leading-relaxed">
+            Managing self-hosted infrastructure, media servers, and automation stacks. 
+            Exploring the intersection of DevOps and Home Automation.
+        </p>
+        <a href="#dashboard" class="px-8 py-3 rounded-full bg-brand-card border border-gray-700 hover:bg-brand-accent hover:text-brand-dark transition-all font-semibold flex items-center gap-2">
+            <i class="fa-solid fa-server"></i> Access Lab Services
+        </a>
+    </header>
+
+    <!-- Dashboard Section -->
+    <main id="dashboard" class="bg-brand-dark py-20 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-2xl font-semibold mb-10 flex items-center gap-3">
+                <i class="fa-solid fa-network-wired text-brand-accent"></i> Service Status
+                <span id="ip-indicator" class="text-xs font-mono bg-green-900 text-green-300 px-2 py-1 rounded ml-auto">
+                    via Cloudflare
+                </span>
+            </h2>
+
+            <!-- Grid Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="services-grid">
+                <!-- Services will be injected here by JS -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-10 text-center text-brand-text text-sm border-t border-gray-800 mt-auto">
+        <p>&copy; 2025 Nash Homelab. Hosted on <span class="text-white">PinoySeoul-320S</span>.</p>
+    </footer>
+
+    <script>
+        // Configuration: Define your services here
+        // External: The Cloudflare Tunnel Address
+        // Internal: Your Local IP (192.168.1.59) + Port
+        const services = [
+            { name: "CasaOS", icon: "fa-door-open", desc: "Dashboard", external: "https://start.pinoyseoul.com", internal: "http://192.168.1.59:80", category: "System" },
+            { name: "Glances", icon: "fa-chart-line", desc: "System Monitor", external: "https://glances.pinoyseoul.com", internal: "http://192.168.1.59:61208", category: "System" },
+            { name: "Jellyseerr", icon: "fa-magnifying-glass", desc: "Request Media", external: "https://jellyseerr.pinoyseoul.com", internal: "http://192.168.1.59:5055", category: "Media" },
+            { name: "Navidrome", icon: "fa-music", desc: "Music Streamer", external: "https://navidrome.pinoyseoul.com", internal: "http://192.168.1.59:4533", category: "Media" },
+            { name: "Photoview", icon: "fa-images", desc: "Photo Gallery", external: "https://photoview.pinoyseoul.com", internal: "http://192.168.1.59:9000", category: "Media" }, // External 9000 based on compose
+            { name: "Home Assistant", icon: "fa-house-signal", desc: "Smart Home", external: "https://homeassistant.pinoyseoul.com", internal: "http://192.168.1.59:8123", category: "System" },
+            { name: "Sonarr", icon: "fa-tv", desc: "TV Management", external: "https://sonarr.pinoyseoul.com", internal: "http://192.168.1.59:8989", category: "Arr" },
+            { name: "Radarr", icon: "fa-video", desc: "Movie Management", external: "https://radarr.pinoyseoul.com", internal: "http://192.168.1.59:7878", category: "Arr" },
+            { name: "Bazarr", icon: "fa-language", desc: "Subtitles", external: "https://bazarr.pinoyseoul.com", internal: "http://192.168.1.59:6767", category: "Arr" },
+            { name: "Prowlarr", icon: "fa-spider", desc: "Index Manager", external: "https://prowlarr.pinoyseoul.com", internal: "http://192.168.1.59:9696", category: "Arr" },
+            { name: "Komga", icon: "fa-book-open", desc: "Manga Server", external: "https://komga.pinoyseoul.com", internal: "http://192.168.1.59:25600", category: "Books" },
+            { name: "Suwayomi", icon: "fa-download", desc: "Manga Downloader", external: "https://suwayomi.pinoyseoul.com", internal: "http://192.168.1.59:4567", category: "Books" },
+            { name: "qBittorrent", icon: "fa-magnet", desc: "Downloader", external: "https://qbittorrent.pinoyseoul.com", internal: "http://192.168.1.59:8090", category: "System" },
+            { name: "Syncthing", icon: "fa-sync", desc: "File Sync", external: "https://syncthing.pinoyseoul.com", internal: "http://192.168.1.59:8384", category: "System" },
+        ];
+
+        const grid = document.getElementById('services-grid');
+        const toggle = document.getElementById('network-toggle');
+        const indicator = document.getElementById('ip-indicator');
+
+        // Function to render cards
+        function renderServices(isLan) {
+            grid.innerHTML = '';
+            services.forEach(service => {
+                const url = isLan ? service.internal : service.external;
+                
+                // Color coding categories
+                let badgeColor = "bg-gray-700 text-gray-300";
+                if(service.category === 'Media') badgeColor = "bg-purple-900 text-purple-200";
+                if(service.category === 'Arr') badgeColor = "bg-blue-900 text-blue-200";
+                if(service.category === 'System') badgeColor = "bg-slate-700 text-slate-300";
+
+                const card = `
+                    <a href="${url}" target="_blank" class="service-card block bg-brand-card p-6 rounded-xl border border-gray-700 hover:shadow-lg hover:shadow-cyan-500/10 group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center text-brand-accent text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid ${service.icon}"></i>
+                            </div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded ${badgeColor}">
+                                ${service.category}
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-100 mb-1">${service.name}</h3>
+                        <p class="text-sm text-gray-400 mb-4">${service.desc}</p>
+                        <div class="text-xs font-mono text-gray-600 truncate group-hover:text-brand-accent transition-colors">
+                            ${url.replace('https://', '').replace('http://', '')}
+                        </div>
+                    </a>
+                `;
+                grid.innerHTML += card;
+            });
+
+            // Update Status Indicator
+            if (isLan) {
+                indicator.textContent = "via LAN (192.168.1.59)";
+                indicator.className = "text-xs font-mono bg-yellow-900 text-yellow-300 px-2 py-1 rounded ml-auto";
+            } else {
+                indicator.textContent = "via Cloudflare Tunnel";
+                indicator.className = "text-xs font-mono bg-green-900 text-green-300 px-2 py-1 rounded ml-auto";
+            }
+        }
+
+        // Initial Render (Cloud Mode)
+        renderServices(false);
+
+        // Toggle Event Listener
+        toggle.addEventListener('change', (e) => {
+            renderServices(e.target.checked);
+        });
+
+    </script>
+</body>
+</html>
