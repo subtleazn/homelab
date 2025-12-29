@@ -30,149 +30,191 @@
     </script>
     <style>
         body { background-color: #0f172a; color: #f8fafc; }
-        .service-card { transition: all 0.3s ease; }
-        .service-card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        .service-card { transition: all 0.2s ease; }
+        .service-card:hover { transform: translateY(-2px); border-color: #38bdf8; }
+        
         /* Toggle Switch */
         .toggle-checkbox:checked { right: 0; border-color: #38bdf8; }
         .toggle-checkbox:checked + .toggle-label { background-color: #38bdf8; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-brand-dark">
 
-    <nav class="w-full p-6 flex justify-between items-center max-w-7xl mx-auto">
-        <div class="text-2xl font-bold tracking-tighter">
-            nash.<span class="text-brand-accent">is-a.dev</span>
-        </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-mono text-brand-text">CLOUD</span>
-            <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                <input type="checkbox" name="toggle" id="network-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300 left-0"/>
-                <label for="network-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-700 cursor-pointer"></label>
+    <!-- Minimal Navbar -->
+    <nav class="w-full py-4 px-6 border-b border-gray-800 bg-brand-dark/50 backdrop-blur-sm fixed top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-xl font-bold tracking-tighter text-gray-100">
+                nash.<span class="text-brand-accent">is-a.dev</span>
             </div>
-            <span class="text-xs font-mono text-brand-text">LAN</span>
+            <div class="text-xs font-mono text-gray-500">
+                BARE METAL / PINOYSEOUL-320S
+            </div>
         </div>
     </nav>
 
-    <header class="flex-1 flex flex-col justify-center items-center text-center px-4 py-20">
-        <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 mb-8 flex items-center justify-center text-4xl font-bold shadow-2xl">
-            🎬
-        </div>
-        <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-            Nash Ang's Homelab
-        </h1>
-        <p class="text-xl text-brand-text max-w-2xl mb-10 leading-relaxed">
-            Managing self-hosted infrastructure, media servers, and automation stacks on Bare Metal.
-        </p>
-        <a href="#dashboard" class="px-8 py-3 rounded-full bg-brand-card border border-gray-700 hover:bg-brand-accent hover:text-brand-dark transition-all font-semibold flex items-center gap-2">
-            <i class="fa-solid fa-server"></i> Access Lab Services
-        </a>
-    </header>
+    <!-- Main Dashboard Area -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-6 pt-24 pb-10">
+        
+        <!-- Controls Header -->
+        <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-8 pb-6 border-b border-gray-800 gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-white mb-1">Service Dashboard</h1>
+                <div class="flex items-center gap-2">
+                    <div id="status-dot" class="w-2 h-2 rounded-full bg-green-500"></div>
+                    <span id="ip-indicator" class="text-sm font-mono text-brand-text">Initializing...</span>
+                </div>
+            </div>
 
-    <main id="dashboard" class="bg-brand-dark py-20 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-2xl font-semibold mb-10 flex items-center gap-3">
-                <i class="fa-solid fa-network-wired text-brand-accent"></i> Service Status
-                <span id="ip-indicator" class="text-xs font-mono bg-green-900 text-green-300 px-2 py-1 rounded ml-auto">
-                    via Cloudflare
-                </span>
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="services-grid"></div>
+            <!-- The Toggle -->
+            <div class="flex items-center gap-3 bg-brand-card px-4 py-2 rounded-lg border border-gray-700">
+                <span class="text-xs font-bold text-gray-400">CLOUD</span>
+                <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+                    <input type="checkbox" name="toggle" id="network-toggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300 left-0"/>
+                    <label for="network-toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></label>
+                </div>
+                <span class="text-xs font-bold text-brand-accent">LAN</span>
+            </div>
         </div>
+
+        <!-- Dynamic Content Container -->
+        <div id="dashboard-container" class="space-y-10">
+            <!-- Sections will be injected here -->
+        </div>
+
     </main>
 
-    <footer class="py-10 text-center text-brand-text text-sm border-t border-gray-800 mt-auto">
-        <p>&copy; 2026 Nash Ang's Homelab. Hosted on <span class="text-white">PinoySeoul-320S</span>.</p>
+    <footer class="py-6 text-center text-gray-600 text-xs border-t border-gray-800">
+        <p>&copy; 2026 Nash Ang's Homelab.</p>
     </footer>
 
     <script>
         // ==========================================
-        // CONFIGURATION SECTION
+        // CONFIGURATION
         // ==========================================
-        // HOW TO USE:
-        // 1. To Remove: Delete the line.
-        // 2. To Add: Copy a line, paste it, change details.
-        // 3. To Hide: Add // at the start of the line.
         
         const services = [
             // --- SYSTEM ---
-            { name: "CasaOS", icon: "fa-file", desc: "File Manager", external: "https://start.pinoyseoul.com", internal: "http://192.168.1.59:80", category: "SYSTEM" },
-            { name: "Glances", icon: "fa-chart-line", desc: "System Monitor", external: "https://glances.pinoyseoul.com", internal: "http://192.168.1.59:61208", category: "SYSTEM" },
-            { name: "Home Assistant", icon: "fa-house-signal", desc: "Smart Home", external: "https://homeassistant.pinoyseoul.com", internal: "http://192.168.1.59:8123", category: "SYSTEM" },
-            { name: "Syncthing", icon: "fa-sync", desc: "File Sync", external: "https://syncthing.pinoyseoul.com", internal: "http://192.168.1.59:8384", category: "SYSTEM" },
+            { name: "CasaOS", icon: "fa-server", desc: "OS Manager", external: "https://start.pinoyseoul.com", internal: "http://192.168.1.59:80", category: "SYSTEM" },
+            { name: "Glances", icon: "fa-chart-line", desc: "Resource Monitor", external: "https://glances.pinoyseoul.com", internal: "http://192.168.1.59:61208", category: "SYSTEM" },
+            { name: "Home Assistant", icon: "fa-house-signal", desc: "Automation", external: "https://homeassistant.pinoyseoul.com", internal: "http://192.168.1.59:8123", category: "SYSTEM" },
+            { name: "Syncthing", icon: "fa-sync", desc: "P2P Sync", external: "https://syncthing.pinoyseoul.com", internal: "http://192.168.1.59:8384", category: "SYSTEM" },
             
             // --- VIDEO ---
-            { name: "Jellyfin", icon: "fa-film", desc: "Media Server", external: "https://jellyfin.pinoyseoul.com", internal: "http://192.168.1.59:8096", category: "VIDEO" },
-            { name: "Sonarr", icon: "fa-tv", desc: "TV Management", external: "https://sonarr.pinoyseoul.com", internal: "http://192.168.1.59:8989", category: "VIDEO" },
-            { name: "Radarr", icon: "fa-video", desc: "Movie Management", external: "https://radarr.pinoyseoul.com", internal: "http://192.168.1.59:7878", category: "VIDEO" },
-            { name: "Bazarr", icon: "fa-language", desc: "Subtitle Management", external: "https://bazarr.pinoyseoul.com", internal: "http://192.168.1.59:6767", category: "VIDEO" },
-            { name: "NodeCast TV", icon: "fa-tv", desc: "IP TV Plaver", external: "https://nodecastv.pinoyseoul.com", internal: "http://192.168.1.59:3000", category: "VIDEO" },
-            { name: "Dispatcharr", icon: "fa-tv", desc: "IP TV Manager", external: "https://dispatcharr.pinoyseoul.com", internal: "http://192.168.1.59:8080", category: "VIDEO" },
+            { name: "Jellyfin", icon: "fa-film", desc: "Streaming", external: "https://jellyfin.pinoyseoul.com", internal: "http://192.168.1.59:8096", category: "VIDEO" },
+            { name: "Sonarr", icon: "fa-tv", desc: "Series Tracker", external: "https://sonarr.pinoyseoul.com", internal: "http://192.168.1.59:8989", category: "VIDEO" },
+            { name: "Radarr", icon: "fa-ticket", desc: "Movie Tracker", external: "https://radarr.pinoyseoul.com", internal: "http://192.168.1.59:7878", category: "VIDEO" },
+            { name: "Bazarr", icon: "fa-language", desc: "Subtitles", external: "https://bazarr.pinoyseoul.com", internal: "http://192.168.1.59:6767", category: "VIDEO" },
+            { name: "NodeCast TV", icon: "fa-rss", desc: "IPTV Player", external: "https://nodecastv.pinoyseoul.com", internal: "http://192.168.1.59:3000", category: "VIDEO" },
+            { name: "Dispatcharr", icon: "fa-tower-broadcast", desc: "IPTV Manager", external: "https://dispatcharr.pinoyseoul.com", internal: "http://192.168.1.59:8080", category: "VIDEO" },
 
             // --- AUDIO ---
-            { name: "Navidrome", icon: "fa-music", desc: "Music Streamer", external: "https://navidrome.pinoyseoul.com", internal: "http://192.168.1.59:4533", category: "AUDIO" },
-            { name: "Lidarr", icon: "fa-music", desc: "Music Management", external: "https://lidarr.pinoyseoul.com", internal: "http://192.168.1.59:8686", category: "AUDIO" },
+            { name: "Navidrome", icon: "fa-music", desc: "Music Player", external: "https://navidrome.pinoyseoul.com", internal: "http://192.168.1.59:4533", category: "AUDIO" },
+            { name: "Lidarr", icon: "fa-guitar", desc: "Music Tracker", external: "https://lidarr.pinoyseoul.com", internal: "http://192.168.1.59:8686", category: "AUDIO" },
 
             // --- PHOTOS ---
-            { name: "Photoview", icon: "fa-images", desc: "Photo Gallery", external: "https://photoview.pinoyseoul.com", internal: "http://192.168.1.59:9000", category: "PHOTOS" },
+            { name: "Photoview", icon: "fa-images", desc: "Gallery", external: "https://photoview.pinoyseoul.com", internal: "http://192.168.1.59:9000", category: "PHOTOS" },
 
             // --- BOOKS ---
-            { name: "Kavita", icon: "fa-book-journal-whills", desc: "Reading Server", external: "https://kavita.pinoyseoul.com", internal: "http://192.168.1.59:5000", category: "BOOKS" },
-            { name: "Suwayomi", icon: "fa-book", desc: "Manga Downloader", external: "https://suwayomi.pinoyseoul.com", internal: "http://192.168.1.59:4567", category: "BOOKS" },
-            { name: "Readarr", icon: "fa-book", desc: "Book Management", external: "https://readarr.pinoyseoul.com", internal: "http://192.168.1.59:8787", category: "BOOKS" },
-            { name: "Audiobookshelf", icon: "fa-book-open-reader", desc: "Audiobooks", external: "https://audiobookshelf.pinoyseoul.com", internal: "http://192.168.1.59:13378", category: "BOOKS" },
+            { name: "Kavita", icon: "fa-book-journal-whills", desc: "Reader", external: "https://kavita.pinoyseoul.com", internal: "http://192.168.1.59:5000", category: "BOOKS" },
+            { name: "Suwayomi", icon: "fa-download", desc: "Manga DL", external: "https://suwayomi.pinoyseoul.com", internal: "http://192.168.1.59:4567", category: "BOOKS" },
+            { name: "Readarr", icon: "fa-book", desc: "Book Tracker", external: "https://readarr.pinoyseoul.com", internal: "http://192.168.1.59:8787", category: "BOOKS" },
+            { name: "Audiobookshelf", icon: "fa-headphones", desc: "Audiobooks", external: "https://audiobookshelf.pinoyseoul.com", internal: "http://192.168.1.59:13378", category: "BOOKS" },
 
             // --- DOWNLOAD ---
-            { name: "qBittorrent", icon: "fa-download", desc: "Downloader", external: "https://qbittorrent.pinoyseoul.com", internal: "http://192.168.1.59:8090", category: "DOWNLOAD" },
-            { name: "Prowlarr", icon: "fa-magnet", desc: "Index Manager", external: "https://prowlarr.pinoyseoul.com", internal: "http://192.168.1.59:9696", category: "DOWNLOAD" },
-
+            { name: "qBittorrent", icon: "fa-magnet", desc: "Torrent Client", external: "https://qbittorrent.pinoyseoul.com", internal: "http://192.168.1.59:8090", category: "DOWNLOAD" },
+            { name: "Prowlarr", icon: "fa-spider", desc: "Index Manager", external: "https://prowlarr.pinoyseoul.com", internal: "http://192.168.1.59:9696", category: "DOWNLOAD" },
         ];
 
-        const grid = document.getElementById('services-grid');
+        // Define Category Order and Colors
+        const categoryOrder = ['SYSTEM', 'VIDEO', 'AUDIO', 'PHOTOS', 'BOOKS', 'DOWNLOAD'];
+        const categoryColors = {
+            'SYSTEM': 'text-slate-400 border-slate-700',
+            'VIDEO': 'text-purple-400 border-purple-900',
+            'AUDIO': 'text-cyan-400 border-cyan-900',
+            'PHOTOS': 'text-pink-400 border-pink-900',
+            'BOOKS': 'text-emerald-400 border-emerald-900',
+            'DOWNLOAD': 'text-orange-400 border-orange-900'
+        };
+
+        const container = document.getElementById('dashboard-container');
         const toggle = document.getElementById('network-toggle');
         const indicator = document.getElementById('ip-indicator');
+        const statusDot = document.getElementById('status-dot');
 
         function renderServices(isLan) {
-            grid.innerHTML = '';
-            services.forEach(service => {
-                const url = isLan ? service.internal : service.external;
-                
-                let badgeColor = "bg-gray-700 text-gray-300";
-                if(service.category === 'Media') badgeColor = "bg-purple-900 text-purple-200";
-                if(service.category === 'Arr') badgeColor = "bg-blue-900 text-blue-200";
-                if(service.category === 'System') badgeColor = "bg-slate-700 text-slate-300";
-                if(service.category === 'Books') badgeColor = "bg-emerald-900 text-emerald-200";
+            container.innerHTML = ''; // Clear existing content
 
-                const card = `
-                    <a href="${url}" target="_blank" class="service-card block bg-brand-card p-6 rounded-xl border border-gray-700 hover:shadow-lg hover:shadow-cyan-500/10 group">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center text-brand-accent text-xl group-hover:scale-110 transition-transform">
-                                <i class="fa-solid ${service.icon}"></i>
+            categoryOrder.forEach(category => {
+                // Filter services for this category
+                const catServices = services.filter(s => s.category === category);
+                
+                if (catServices.length > 0) {
+                    // Create Section
+                    const section = document.createElement('section');
+                    
+                    // Header
+                    const colorClass = categoryColors[category] || 'text-gray-400 border-gray-700';
+                    const headerHTML = `
+                        <div class="flex items-center gap-2 mb-4 border-b border-gray-800 pb-2">
+                            <h2 class="text-sm font-bold tracking-widest ${colorClass.split(' ')[0]}">${category}</h2>
+                            <div class="flex-1"></div>
+                            <span class="text-xs text-gray-600 font-mono">${catServices.length} Apps</span>
+                        </div>
+                    `;
+                    section.innerHTML = headerHTML;
+
+                    // Grid
+                    const grid = document.createElement('div');
+                    grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4';
+
+                    catServices.forEach(service => {
+                        const url = isLan ? service.internal : service.external;
+                        const displayUrl = url.replace('https://', '').replace('http://', '').split('/')[0];
+                        
+                        const card = document.createElement('a');
+                        card.href = url;
+                        card.target = "_blank";
+                        card.className = "service-card bg-brand-card p-4 rounded-lg border border-gray-700 hover:border-gray-500 hover:bg-gray-800 flex flex-col gap-2 group";
+                        card.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-gray-900 flex items-center justify-center text-gray-400 group-hover:text-white transition-colors">
+                                    <i class="fa-solid ${service.icon}"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-200 text-sm leading-tight">${service.name}</h3>
+                                    <p class="text-[10px] text-gray-500 uppercase tracking-wide">${service.desc}</p>
+                                </div>
                             </div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded ${badgeColor}">
-                                ${service.category}
-                            </span>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-100 mb-1">${service.name}</h3>
-                        <p class="text-sm text-gray-400 mb-4">${service.desc}</p>
-                        <div class="text-xs font-mono text-gray-600 truncate group-hover:text-brand-accent transition-colors">
-                            ${url.replace('https://', '').replace('http://', '')}
-                        </div>
-                    </a>
-                `;
-                grid.innerHTML += card;
+                            <div class="mt-auto pt-2 border-t border-gray-700/50">
+                                <div class="text-[10px] font-mono text-gray-600 truncate group-hover:text-brand-accent transition-colors">
+                                    ${displayUrl}
+                                </div>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    section.appendChild(grid);
+                    container.appendChild(section);
+                }
             });
 
+            // Update Header Status
             if (isLan) {
-                indicator.textContent = "via LAN (192.168.1.59)";
-                indicator.className = "text-xs font-mono bg-yellow-900 text-yellow-300 px-2 py-1 rounded ml-auto";
+                indicator.textContent = "LAN MODE (192.168.1.59)";
+                indicator.className = "text-sm font-mono text-yellow-500 font-bold";
+                statusDot.className = "w-2 h-2 rounded-full bg-yellow-500 animate-pulse";
             } else {
-                indicator.textContent = "via Cloudflare Tunnel";
-                indicator.className = "text-xs font-mono bg-green-900 text-green-300 px-2 py-1 rounded ml-auto";
+                indicator.textContent = "CLOUD MODE (Tunnel)";
+                indicator.className = "text-sm font-mono text-green-500 font-bold";
+                statusDot.className = "w-2 h-2 rounded-full bg-green-500";
             }
         }
 
+        // Initial Render
         renderServices(false);
 
+        // Event Listener
         toggle.addEventListener('change', (e) => {
             renderServices(e.target.checked);
         });
