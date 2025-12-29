@@ -2,21 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Nash Ang is managing self-hosted infrastructure, media servers, and automation stacks.">
-    <meta name="keywords" content="Nash Ang, web app developer, DevOps engineer, frontend developer, web developer, Docker, Python, JavaScript, portfolio">
-    <meta name="author" content="Nash Ang">
-    <meta property="og:title" content="Nash Ang's Homelab">
-    <meta property="og:description" content="Nash Ang is managing self-hosted infrastructure, media servers, and automation stacks.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://nash.is-a.dev/homelab">
-    <meta name="google-site-verification" content="44x08qranVhVOpRo9-IDg7OIdBJTICL0Ue-Xgw7_41w" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%2250%%22 y=%2250%%22 style=%22dominant-baseline:central;text-anchor:middle;font-family:Arial, sans-serif;font-size:60px;fill:%232563eb;%22>🎬</text></svg>" type="image/svg+xml">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nash Ang's Homelab</title>
-    <!-- Tailwind CSS for styling -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -25,9 +15,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
                         brand: {
                             dark: '#0f172a',
@@ -45,23 +33,16 @@
         .service-card { transition: all 0.3s ease; }
         .service-card:hover { transform: translateY(-5px); border-color: #38bdf8; }
         /* Toggle Switch */
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #38bdf8;
-        }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #38bdf8;
-        }
+        .toggle-checkbox:checked { right: 0; border-color: #38bdf8; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #38bdf8; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Navigation / Control Bar -->
     <nav class="w-full p-6 flex justify-between items-center max-w-7xl mx-auto">
         <div class="text-2xl font-bold tracking-tighter">
             nash.<span class="text-brand-accent">is-a.dev</span>
         </div>
-        
         <div class="flex items-center gap-3">
             <span class="text-xs font-mono text-brand-text">CLOUD</span>
             <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
@@ -72,7 +53,6 @@
         </div>
     </nav>
 
-    <!-- Hero / Portfolio Section -->
     <header class="flex-1 flex flex-col justify-center items-center text-center px-4 py-20">
         <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 mb-8 flex items-center justify-center text-4xl font-bold shadow-2xl">
             🎬
@@ -81,15 +61,13 @@
             Nash Ang's Homelab
         </h1>
         <p class="text-xl text-brand-text max-w-2xl mb-10 leading-relaxed">
-            Managing self-hosted infrastructure, media servers, and automation stacks. 
-            Exploring the intersection of DevOps and Home Automation.
+            Managing self-hosted infrastructure, media servers, and automation stacks on Bare Metal.
         </p>
         <a href="#dashboard" class="px-8 py-3 rounded-full bg-brand-card border border-gray-700 hover:bg-brand-accent hover:text-brand-dark transition-all font-semibold flex items-center gap-2">
             <i class="fa-solid fa-server"></i> Access Lab Services
         </a>
     </header>
 
-    <!-- Dashboard Section -->
     <main id="dashboard" class="bg-brand-dark py-20 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-6">
             <h2 class="text-2xl font-semibold mb-10 flex items-center gap-3">
@@ -98,62 +76,66 @@
                     via Cloudflare
                 </span>
             </h2>
-
-            <!-- Grid Container -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="services-grid">
-                <!-- Services will be injected here by JS -->
-            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="services-grid"></div>
         </div>
     </main>
 
     <footer class="py-10 text-center text-brand-text text-sm border-t border-gray-800 mt-auto">
-        <p>&copy; 2026 Nash Ang's Homelab. Hosted on <span class="text-white">Bare Metal PinoySeoul-320S</span>.</p>
+        <p>&copy; 2026 Nash Ang's Homelab. Hosted on <span class="text-white">PinoySeoul-320S</span>.</p>
     </footer>
 
     <script>
-        // Configuration: Define your services here
-        // External: The Cloudflare Tunnel Address
-        // Internal: Your Local IP (192.168.1.59) + Port
+        // ==========================================
+        // CONFIGURATION SECTION
+        // ==========================================
+        // HOW TO USE:
+        // 1. To Remove: Delete the line.
+        // 2. To Add: Copy a line, paste it, change details.
+        // 3. To Hide: Add // at the start of the line.
+        
         const services = [
-            // SYSTEM
-            { name: "CasaOS", icon: "fa-door-open", desc: "File Manager", external: "https://start.pinoyseoul.com", internal: "http://192.168.1.59:80", category: "System" },
-            { name: "Glances", icon: "fa-chart-line", desc: "System Monitor", external: "https://glances.pinoyseoul.com", internal: "http://192.168.1.59:61208", category: "System" },
-            { name: "Home Assistant", icon: "fa-house-signal", desc: "Smart Home", external: "https://homeassistant.pinoyseoul.com", internal: "http://192.168.1.59:8123", category: "System" },
-            { name: "Syncthing", icon: "fa-sync", desc: "File Sync", external: "https://syncthing.pinoyseoul.com", internal: "http://192.168.1.59:8384", category: "System" },
-            { name: "qBittorrent", icon: "fa-magnet", desc: "Downloader", external: "https://qbittorrent.pinoyseoul.com", internal: "http://192.168.1.59:8090", category: "System" },
-            { name: "Dispatcharr", icon: "fa-server", desc: "Dispatch Manager", external: "https://dispatcharr.pinoyseoul.com", internal: "http://192.168.1.59:8080", category: "System" }, // Default port 8080 assumed
+            // --- SYSTEM ---
+            { name: "CasaOS", icon: "fa-file", desc: "File Manager", external: "https://start.pinoyseoul.com", internal: "http://192.168.1.59:80", category: "SYSTEM" },
+            { name: "Glances", icon: "fa-chart-line", desc: "System Monitor", external: "https://glances.pinoyseoul.com", internal: "http://192.168.1.59:61208", category: "SYSTEM" },
+            { name: "Home Assistant", icon: "fa-house-signal", desc: "Smart Home", external: "https://homeassistant.pinoyseoul.com", internal: "http://192.168.1.59:8123", category: "SYSTEM" },
+            { name: "Syncthing", icon: "fa-sync", desc: "File Sync", external: "https://syncthing.pinoyseoul.com", internal: "http://192.168.1.59:8384", category: "SYSTEM" },
+            
+            // --- VIDEO ---
+            { name: "Jellyfin", icon: "fa-film", desc: "Media Server", external: "https://jellyfin.pinoyseoul.com", internal: "http://192.168.1.59:8096", category: "VIDEO" },
+            { name: "Sonarr", icon: "fa-tv", desc: "TV Management", external: "https://sonarr.pinoyseoul.com", internal: "http://192.168.1.59:8989", category: "VIDEO" },
+            { name: "Radarr", icon: "fa-video", desc: "Movie Management", external: "https://radarr.pinoyseoul.com", internal: "http://192.168.1.59:7878", category: "VIDEO" },
+            { name: "Bazarr", icon: "fa-language", desc: "Subtitle Management", external: "https://bazarr.pinoyseoul.com", internal: "http://192.168.1.59:6767", category: "VIDEO" },
+            { name: "NodeCast TV", icon: "fa-tv", desc: "IP TV Plaver", external: "https://nodecastv.pinoyseoul.com", internal: "http://192.168.1.59:3000", category: "VIDEO" },
+            { name: "Dispatcharr", icon: "fa-tv", desc: "IP TV Manager", external: "https://dispatcharr.pinoyseoul.com", internal: "http://192.168.1.59:8080", category: "VIDEO" },
 
-            // MEDIA
-            { name: "Jellyfin", icon: "fa-film", desc: "Media Server", external: "https://jellyfin.pinoyseoul.com", internal: "http://192.168.1.59:8096", category: "Media" },
-            { name: "Navidrome", icon: "fa-music", desc: "Music Streamer", external: "https://navidrome.pinoyseoul.com", internal: "http://192.168.1.59:4533", category: "Media" },
-            { name: "Photoview", icon: "fa-images", desc: "Photo Gallery", external: "https://photoview.pinoyseoul.com", internal: "http://192.168.1.59:9000", category: "Media" },
-            { name: "Audiobookshelf", icon: "fa-book-open-reader", desc: "Audiobooks", external: "https://audiobookshelf.pinoyseoul.com", internal: "http://192.168.1.59:13378", category: "Media" },
-            { name: "NodeCastV", icon: "fa-rss", desc: "Cast Stream", external: "https://nodecastv.pinoyseoul.com", internal: "http://192.168.1.59:3000", category: "Media" }, // Default Node port assumed
+            // --- AUDIO ---
+            { name: "Navidrome", icon: "fa-music", desc: "Music Streamer", external: "https://navidrome.pinoyseoul.com", internal: "http://192.168.1.59:4533", category: "AUDIO" },
+            { name: "Lidarr", icon: "fa-music", desc: "Music Management", external: "https://lidarr.pinoyseoul.com", internal: "http://192.168.1.59:8686", category: "AUDIO" },
 
-            // ARR STACK
-            { name: "Sonarr", icon: "fa-tv", desc: "TV Management", external: "https://sonarr.pinoyseoul.com", internal: "http://192.168.1.59:8989", category: "Arr" },
-            { name: "Radarr", icon: "fa-video", desc: "Movie Management", external: "https://radarr.pinoyseoul.com", internal: "http://192.168.1.59:7878", category: "Arr" },
-            { name: "Lidarr", icon: "fa-music", desc: "Music Management", external: "https://lidarr.pinoyseoul.com", internal: "http://192.168.1.59:8686", category: "Arr" },
-            { name: "Readarr", icon: "fa-book", desc: "Book Management", external: "https://readarr.pinoyseoul.com", internal: "http://192.168.1.59:8787", category: "Arr" },
-            { name: "Bazarr", icon: "fa-language", desc: "Subtitles", external: "https://bazarr.pinoyseoul.com", internal: "http://192.168.1.59:6767", category: "Arr" },
-            { name: "Prowlarr", icon: "fa-spider", desc: "Index Manager", external: "https://prowlarr.pinoyseoul.com", internal: "http://192.168.1.59:9696", category: "Arr" },
+            // --- PHOTOS ---
+            { name: "Photoview", icon: "fa-images", desc: "Photo Gallery", external: "https://photoview.pinoyseoul.com", internal: "http://192.168.1.59:9000", category: "PHOTOS" },
 
-            // BOOKS
-            { name: "Kavita", icon: "fa-book-journal-whills", desc: "Reading Server", external: "https://kavita.pinoyseoul.com", internal: "http://192.168.1.59:5000", category: "Books" },
-            { name: "Suwayomi", icon: "fa-download", desc: "Manga Downloader", external: "https://suwayomi.pinoyseoul.com", internal: "http://192.168.1.59:4567", category: "Books" },
+            // --- BOOKS ---
+            { name: "Kavita", icon: "fa-book-journal-whills", desc: "Reading Server", external: "https://kavita.pinoyseoul.com", internal: "http://192.168.1.59:5000", category: "BOOKS" },
+            { name: "Suwayomi", icon: "fa-book", desc: "Manga Downloader", external: "https://suwayomi.pinoyseoul.com", internal: "http://192.168.1.59:4567", category: "BOOKS" },
+            { name: "Readarr", icon: "fa-book", desc: "Book Management", external: "https://readarr.pinoyseoul.com", internal: "http://192.168.1.59:8787", category: "BOOKS" },
+            { name: "Audiobookshelf", icon: "fa-book-open-reader", desc: "Audiobooks", external: "https://audiobookshelf.pinoyseoul.com", internal: "http://192.168.1.59:13378", category: "BOOKS" },
+
+            // --- DOWNLOAD ---
+            { name: "qBittorrent", icon: "fa-download", desc: "Downloader", external: "https://qbittorrent.pinoyseoul.com", internal: "http://192.168.1.59:8090", category: "DOWNLOAD" },
+            { name: "Prowlarr", icon: "fa-magnet", desc: "Index Manager", external: "https://prowlarr.pinoyseoul.com", internal: "http://192.168.1.59:9696", category: "DOWNLOAD" },
+
         ];
 
         const grid = document.getElementById('services-grid');
         const toggle = document.getElementById('network-toggle');
         const indicator = document.getElementById('ip-indicator');
 
-        // Function to render cards
         function renderServices(isLan) {
             grid.innerHTML = '';
             services.forEach(service => {
                 const url = isLan ? service.internal : service.external;
                 
-                // Color coding categories
                 let badgeColor = "bg-gray-700 text-gray-300";
                 if(service.category === 'Media') badgeColor = "bg-purple-900 text-purple-200";
                 if(service.category === 'Arr') badgeColor = "bg-blue-900 text-blue-200";
@@ -180,7 +162,6 @@
                 grid.innerHTML += card;
             });
 
-            // Update Status Indicator
             if (isLan) {
                 indicator.textContent = "via LAN (192.168.1.59)";
                 indicator.className = "text-xs font-mono bg-yellow-900 text-yellow-300 px-2 py-1 rounded ml-auto";
@@ -190,14 +171,11 @@
             }
         }
 
-        // Initial Render (Cloud Mode)
         renderServices(false);
 
-        // Toggle Event Listener
         toggle.addEventListener('change', (e) => {
             renderServices(e.target.checked);
         });
-
     </script>
 </body>
 </html>
