@@ -28,18 +28,27 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontFamily: { 
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
                     colors: {
+                        slate: {
+                            950: '#030712',
+                            900: '#0b0f19',
+                            800: '#111827',
+                            700: '#1f2937'
+                        },
                         brand: {
-                            dark: '#0f172a',
-                            card: '#1e293b',
-                            accent: '#38bdf8',
+                            accent: '#38bdf8',  // Sky 400
+                            purple: '#818cf8',  // Indigo 400
+                            emerald: '#34d399',  // Emerald 400
                             text: '#94a3b8'
                         }
                     }
@@ -48,50 +57,101 @@
         }
     </script>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; }
-        .service-card { transition: all 0.2s ease; }
-        .service-card:hover { transform: translateY(-2px); border-color: #38bdf8; }
+        body { 
+            background-color: #030712; 
+            color: #f3f4f6; 
+            overflow-x: hidden;
+        }
         
+        /* Glassmorphism Cards */
+        .glass-card { 
+            background: rgba(17, 24, 39, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card:hover { 
+            transform: translateY(-2px); 
+            border-color: rgba(56, 189, 248, 0.25); 
+            background: rgba(17, 24, 39, 0.6);
+            box-shadow: 0 10px 20px -10px rgba(56, 189, 248, 0.15);
+        }
+
+        /* Ambient Glow Gradients */
+        .glow-bg {
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.06) 0%, rgba(56, 189, 248, 0.02) 50%, transparent 100%);
+        }
+
+        /* Mouse Tracking Spotlight */
+        #mouse-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.04) 0%, rgba(99, 102, 241, 0.01) 50%, transparent 100%);
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            transition: transform 0.1s cubic-bezier(0.1, 0.8, 0.3, 1);
+        }
+
         /* Toggle Switch */
         .toggle-checkbox:checked { right: 0; border-color: #38bdf8; }
         .toggle-checkbox:checked + .toggle-label { background-color: #38bdf8; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-brand-dark">
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-brand-accent/20 selection:text-brand-accent">
+
+    <!-- Interactive Spotlights -->
+    <div id="mouse-glow"></div>
+    <div class="absolute top-0 left-1/4 w-[600px] h-[600px] glow-bg rounded-full pointer-events-none z-0"></div>
+    <div class="absolute top-[800px] right-1/4 w-[600px] h-[600px] glow-bg rounded-full pointer-events-none z-0"></div>
 
     <!-- Minimal Navbar -->
-    <nav class="w-full py-4 px-6 border-b border-gray-800 bg-brand-dark/50 backdrop-blur-sm fixed top-0 z-50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-xl font-bold tracking-tighter text-gray-100">
+    <nav class="fixed w-full z-50 bg-slate-950/70 backdrop-blur-lg border-b border-slate-900/80">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo back to portfolio -->
+            <a href="https://nash.is-a.dev/" class="text-xl font-bold tracking-tight hover:text-white transition-colors flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-accent animate-pulse"></span>
                 nash.<span class="text-brand-accent">is-a.dev</span>
-            </div>
-            <div class="text-xs font-mono text-gray-500">
-                BARE METAL / PINOYSEOUL-320S
+            </a>
+            
+            <div class="flex items-center gap-6">
+                <!-- Navigation back link -->
+                <a href="https://nash.is-a.dev/" class="text-xs font-medium text-slate-400 hover:text-white transition-colors hidden sm:block">
+                    <i class="fa-solid fa-arrow-left mr-1.5"></i>Back to Portfolio
+                </a>
+                
+                <div class="text-[10px] font-mono text-slate-500 border border-slate-800 bg-slate-900/50 px-2.5 py-1 rounded-md">
+                    BARE METAL / PINOYSEOUL-320S
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Dashboard Area -->
-    <main class="flex-1 max-w-7xl mx-auto w-full px-6 pt-24 pb-10">
+    <main class="relative z-10 flex-1 max-w-7xl mx-auto w-full px-6 pt-32 pb-16">
         
         <!-- Controls Header -->
-        <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-8 pb-6 border-b border-gray-800 gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-10 pb-8 border-b border-slate-900 gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-white mb-1">Web App Launcher</h1>
-                <div class="flex items-center gap-2">
-                    <div id="status-dot" class="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span id="ip-indicator" class="text-sm font-mono text-brand-text">Initializing...</span>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2 tracking-tight">Web App Launcher</h1>
+                <div class="flex items-center gap-2.5">
+                    <div id="status-dot" class="w-2.5 h-2.5 rounded-full bg-brand-emerald"></div>
+                    <span id="ip-indicator" class="text-xs font-mono text-slate-400">Initializing...</span>
                 </div>
             </div>
 
             <!-- The Toggle -->
-            <div class="flex items-center gap-3 bg-brand-card px-4 py-2 rounded-lg border border-gray-700">
-                <span class="text-xs font-bold text-gray-400">CLOUD</span>
+            <div class="flex items-center gap-3 bg-slate-900/30 backdrop-blur-md px-4 py-2.5 rounded-xl border border-slate-800/80">
+                <span class="text-[10px] font-mono font-bold text-slate-400 tracking-wider">CLOUD</span>
                 <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="toggle" id="network-toggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300 left-0"/>
-                    <label for="network-toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-600 cursor-pointer"></label>
+                    <input type="checkbox" name="toggle" id="network-toggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-slate-950 border-4 appearance-none cursor-pointer border-slate-800 left-0 checked:left-5 transition-all duration-300"/>
+                    <label for="network-toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-slate-800 cursor-pointer"></label>
                 </div>
-                <span class="text-xs font-bold text-brand-accent">LAN</span>
+                <span class="text-[10px] font-mono font-bold text-brand-accent tracking-wider">LAN</span>
             </div>
         </div>
 
@@ -102,8 +162,8 @@
 
     </main>
 
-    <footer class="py-6 text-center text-gray-600 text-xs border-t border-gray-800">
-        <p>&copy; 2026 Nash Ang's Homelab</p>
+    <footer class="relative z-10 py-8 text-center text-slate-500 text-xs border-t border-slate-900 bg-slate-950/40">
+        <p>&copy; 2026 Nash Ang's Homelab. Built with Tailwind CSS and Edge-Optimized Runtimes.</p>
     </footer>
 
     <script>
@@ -146,12 +206,12 @@
         // Define Category Order and Colors
         const categoryOrder = ['SYSTEM', 'VIDEO', 'AUDIO', 'PHOTOS', 'BOOKS', 'DOWNLOAD'];
         const categoryColors = {
-            'SYSTEM': 'text-slate-400 border-slate-700',
-            'VIDEO': 'text-purple-400 border-purple-900',
-            'AUDIO': 'text-cyan-400 border-cyan-900',
-            'PHOTOS': 'text-pink-400 border-pink-900',
-            'BOOKS': 'text-emerald-400 border-emerald-900',
-            'DOWNLOAD': 'text-orange-400 border-orange-900'
+            'SYSTEM': 'text-slate-400 border-slate-800 bg-slate-900/40',
+            'VIDEO': 'text-purple-400 border-purple-950 bg-purple-950/10',
+            'AUDIO': 'text-cyan-400 border-cyan-950 bg-cyan-950/10',
+            'PHOTOS': 'text-pink-400 border-pink-950 bg-pink-950/10',
+            'BOOKS': 'text-emerald-400 border-emerald-950 bg-emerald-950/10',
+            'DOWNLOAD': 'text-orange-400 border-orange-950 bg-orange-950/10'
         };
 
         const container = document.getElementById('dashboard-container');
@@ -171,12 +231,15 @@
                     const section = document.createElement('section');
                     
                     // Header
-                    const colorClass = categoryColors[category] || 'text-gray-400 border-gray-700';
+                    const colorClass = categoryColors[category] || 'text-slate-400 border-slate-800 bg-slate-900/40';
+                    const classes = colorClass.split(' ');
+                    const textClass = classes[0];
+                    const borderClass = classes[1];
+                    const bgClass = classes[2];
                     const headerHTML = `
-                        <div class="flex items-center gap-2 mb-4 border-b border-gray-800 pb-2">
-                            <h2 class="text-sm font-bold tracking-widest ${colorClass.split(' ')[0]}">${category}</h2>
-                            <div class="flex-1"></div>
-                            <span class="text-xs text-gray-600 font-mono">${catServices.length} Apps</span>
+                        <div class="flex items-center justify-between gap-4 mb-6 border-b border-slate-900 pb-3">
+                            <h2 class="text-xs font-mono font-bold tracking-widest ${textClass} ${bgClass} border ${borderClass} px-3 py-1 rounded-full">${category}</h2>
+                            <span class="text-[10px] text-slate-500 font-mono">${catServices.length} Active Services</span>
                         </div>
                     `;
                     section.innerHTML = headerHTML;
@@ -192,20 +255,20 @@
                         const card = document.createElement('a');
                         card.href = url;
                         card.target = "_blank";
-                        card.className = "service-card bg-brand-card p-4 rounded-lg border border-gray-700 hover:border-gray-500 hover:bg-gray-800 flex flex-col gap-2 group";
+                        card.className = "service-card glass-card p-5 rounded-xl flex flex-col gap-3 group";
                         card.innerHTML = `
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded bg-gray-900 flex items-center justify-center text-gray-400 group-hover:text-white transition-colors">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-400 group-hover:text-brand-accent group-hover:border-brand-accent/30 transition-all">
                                     <i class="fa-solid ${service.icon}"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-gray-200 text-sm leading-tight">${service.name}</h3>
-                                    <p class="text-[10px] text-gray-500 uppercase tracking-wide">${service.desc}</p>
+                                    <h3 class="font-bold text-white text-sm leading-tight group-hover:text-brand-accent transition-colors">${service.name}</h3>
+                                    <p class="text-[10px] text-slate-500 font-mono uppercase tracking-wider mt-0.5">${service.desc}</p>
                                 </div>
                             </div>
-                            <div class="mt-auto pt-2 border-t border-gray-700/50">
-                                <div class="text-[10px] font-mono text-gray-600 truncate group-hover:text-brand-accent transition-colors">
-                                    ${displayUrl}
+                            <div class="mt-auto pt-2.5 border-t border-slate-900/60">
+                                <div class="text-[10px] font-mono text-slate-500 truncate group-hover:text-brand-accent transition-colors">
+                                    <i class="fa-solid fa-link text-[8px] mr-1"></i>${displayUrl}
                                 </div>
                             </div>
                         `;
@@ -219,13 +282,13 @@
 
             // Update Header Status
             if (isLan) {
-                indicator.textContent = "LAN MODE (192.168.1.59)";
-                indicator.className = "text-sm font-mono text-yellow-500 font-bold";
-                statusDot.className = "w-2 h-2 rounded-full bg-yellow-500 animate-pulse";
+                indicator.textContent = "LAN CONNECTION (192.168.1.59)";
+                indicator.className = "text-xs font-mono text-yellow-500 font-bold tracking-wider";
+                statusDot.className = "w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse";
             } else {
-                indicator.textContent = "CLOUD MODE (Tunnel)";
-                indicator.className = "text-sm font-mono text-green-500 font-bold";
-                statusDot.className = "w-2 h-2 rounded-full bg-green-500";
+                indicator.textContent = "CLOUD CLUSTER (Cloudflare Tunnel)";
+                indicator.className = "text-xs font-mono text-brand-emerald font-bold tracking-wider";
+                statusDot.className = "w-2.5 h-2.5 rounded-full bg-brand-emerald";
             }
         }
 
@@ -235,6 +298,14 @@
         // Event Listener
         toggle.addEventListener('change', (e) => {
             renderServices(e.target.checked);
+        });
+
+        // Spotlight glow tracking
+        const glow = document.getElementById('mouse-glow');
+        document.addEventListener('mousemove', (e) => {
+            if (glow) {
+                glow.style.transform = `translate(${e.clientX - 200}px, ${e.clientY - 200}px)`;
+            }
         });
     </script>
 </body>
